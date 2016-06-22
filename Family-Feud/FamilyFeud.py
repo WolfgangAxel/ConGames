@@ -1,18 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
-#Goals:
-#Have type boxes with "show" buttons next to them-DONE
-##Need two - one for name, one for points---------REDACTED
-#Score updater on bottom
-#Make new board button----------------------------DONE
-#Read from file?----------------------------------DONE
-##Import csv as array-----------------------------DONE
-##change text box to array value------------------DONE
-#Cross platform with 'os.getcwd'
-#If box is empty, darken or something-------------DONE
-#Long term: maybe make a speed round thing
-
 import Tkinter
 import math
 import os

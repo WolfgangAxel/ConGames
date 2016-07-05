@@ -80,6 +80,7 @@ class simpleapp_tk(Tkinter.Tk):
 			self.RLF.writelines( "%s\n" % item for item in self.newSongList )
 	
 	def launchEditor(self):
+		self.redefineAndRandomize()
 		self.ed = Tkinter.Toplevel(self)
 		self.ed.total = Tkinter.Label(self.ed,text="Songs in list: %s" % self.songNumber)
 		self.ed.total.grid(row=0,sticky="NSEW")
@@ -117,6 +118,8 @@ class simpleapp_tk(Tkinter.Tk):
 		self.ed.tunes = open(self.songListFile,'a')
 		self.ed.tunes.write(str(self.ed.newAppendage)+'\n')
 		self.ed.tunes.close()
+		self.ed.showName.set("Enter show name here")
+		self.ed.songName.set("Enter song name here")
 		self.redefineAndRandomize()
 		self.ed.total.config(text="Songs in list: %s" % self.songNumber)
 		self.ed.confirm.destroy()

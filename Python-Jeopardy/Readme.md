@@ -2,6 +2,8 @@
 
 Branched off of my previous Jeopardy Scoreboard, this is my own rendition of a Jeopardy-style game intended for larger audiences. Create a "board" using the Editor.py script, then open it with Jeopardy.py and start playing!
 
+[Here are a few images of the game.](http://imgur.com/a/nkiKA)
+
 ##Editor
 
 The editor allows you to easily create a board to use with the game. Each category has it's own Frame which is loaded and unloaded as the next/previous buttons are pressed. The "Question" text box is where you would type the "Clue" that is initially shown to the people playing (the nomenclature used in this scripe will eventually be updated to at least somewhat mirror the game show). The points assigned to each question can be changed through the "Change Point Values" menu button. Images can be added to the "question" Frame by clicking the "Add Image" button, then typing the full path to the image (I acknowledge this is tedious, however file-browsing open dialogs are well beyond my abilities) (also, the image system has plans to be more customizable by giving the choice between the question/answer Frames, and above or below the text).

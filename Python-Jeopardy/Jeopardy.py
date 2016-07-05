@@ -44,9 +44,9 @@ class simpleapp_tk(Tkinter.Tk):
 		
 		for i,worth in enumerate(["1","2","3","4","5"]):
 			for j,cat in enumerate(["a","b","c","d","e"]):
-				exec('self.gb.catlab'+str(j)+' = Tkinter.Label(self.gb,text="'+cat+'",wraplength=100,font=("Sans Serif",self.FontSize.get()),width='+str(self.winfo_width()/5)+',relief="raised",bg="white")')
+				exec('self.gb.catlab'+str(j)+' = Tkinter.Label(self.gb,text="'+cat+'",wraplength=100,font=("system",self.FontSize.get()),width='+str(self.winfo_width()/5)+',relief="raised",bg="white")')
 				exec('self.gb.catlab'+str(j)+'.grid(column='+str(j)+',row=0,sticky="NSEW")')
-				exec('self.gb.box'+str(j)+'x'+str(i+1)+' = Tkinter.Button(self.gb,text="'+worth+'",command=self.reveal'+str(j)+'x'+str(i+1)+',font=("Sans Serif",self.FontSize.get()),width='+str(self.winfo_width()/5)+')')
+				exec('self.gb.box'+str(j)+'x'+str(i+1)+' = Tkinter.Button(self.gb,text="'+worth+'",command=self.reveal'+str(j)+'x'+str(i+1)+',font=("system",self.FontSize.get()),width='+str(self.winfo_width()/5)+')')
 				exec('self.gb.box'+str(j)+'x'+str(i+1)+'.grid(column='+str(j)+',row='+str(i+1)+',sticky="NSEW")')
 		
 		for i in range(0,6):
@@ -99,12 +99,12 @@ class simpleapp_tk(Tkinter.Tk):
 			rowcount=rowcount+1
 		
 		self.ScoreTime.redScore = Tkinter.IntVar()
-		self.ScoreTime.labelRed = Tkinter.Label(self.ScoreTime,textvariable=self.ScoreTime.redScore,fg="white",bg="red",font=("DwarfFortressVan", 25))
+		self.ScoreTime.labelRed = Tkinter.Label(self.ScoreTime,textvariable=self.ScoreTime.redScore,fg="white",bg="red",font=("system", 25))
 		self.ScoreTime.labelRed.grid(column=0,row=2,columnspan=3,sticky='NSEW')
 		self.ScoreTime.redScore.set(0)
 		
 		self.ScoreTime.blueScore = Tkinter.IntVar()
-		self.ScoreTime.labelBlue = Tkinter.Label(self.ScoreTime,textvariable=self.ScoreTime.blueScore,fg="white",bg="blue",font=("DwarfFortressVan", 25))
+		self.ScoreTime.labelBlue = Tkinter.Label(self.ScoreTime,textvariable=self.ScoreTime.blueScore,fg="white",bg="blue",font=("system", 25))
 		self.ScoreTime.labelBlue.grid(column=6,row=2,columnspan=3,sticky='NSEW')
 		self.ScoreTime.blueScore.set(0)
 		
@@ -112,7 +112,7 @@ class simpleapp_tk(Tkinter.Tk):
 		self.ScoreTime.button_ST.grid(column=4,row=1,sticky='NSEW')
 		
 		self.ScoreTime.timeCountdown = Tkinter.IntVar()
-		self.ScoreTime.labelTime = Tkinter.Label(self.ScoreTime,textvariable=self.ScoreTime.timeCountdown,font=("DwarfFortressVan", 25))
+		self.ScoreTime.labelTime = Tkinter.Label(self.ScoreTime,textvariable=self.ScoreTime.timeCountdown,font=("system", 25))
 		self.ScoreTime.labelTime.grid(column=4,row=2,sticky='NSEW')
 		self.ScoreTime.timeCountdown.set(self.ScoreTime.timeValue.get())
 		
@@ -195,7 +195,7 @@ class simpleapp_tk(Tkinter.Tk):
 	def reveal(self):
 		exec('self.gb.box'+str(self.CAT)+'x'+str(self.QUES)+'.config(state="disabled")')
 		self.qna = Tkinter.Frame(self)
-		self.qna.pointlabel=Tkinter.Label(self.qna,text=self.PTS,font=("Sans Serif",self.FontSize.get()))
+		self.qna.pointlabel=Tkinter.Label(self.qna,text=self.PTS,font=("system",self.FontSize.get()))
 		self.qna.pointlabel.grid(row=0,sticky="NSEW")
 		if eval('str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[2])'):
 			self.qna.path=Image.open(str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[2]))
@@ -213,15 +213,15 @@ class simpleapp_tk(Tkinter.Tk):
 			self.qna.img.grid(row=1,sticky="NSEW")
 			if eval('str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[0])'):
 				totrow=4
-				self.qna.question=Tkinter.Label(self.qna,text=str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[0]),wraplength=self.winfo_width()-int(self.FontSize.get()),font=("Sans Serif",self.FontSize.get()))
+				self.qna.question=Tkinter.Label(self.qna,text=str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[0]),wraplength=self.winfo_width()-int(self.FontSize.get()),font=("system",self.FontSize.get()))
 				self.qna.question.grid(row=2,sticky="NSEW")
 			else:
 				totrow=3
 		else:
 			totrow=3
-			self.qna.question=Tkinter.Label(self.qna,text=str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[0]),wraplength=self.winfo_width()-int(self.FontSize.get()),font=("Sans Serif",self.FontSize.get()))
+			self.qna.question=Tkinter.Label(self.qna,text=str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[0]),wraplength=self.winfo_width()-int(self.FontSize.get()),font=("system",self.FontSize.get()))
 			self.qna.question.grid(row=1,sticky="NSEW")
-		self.qna.flip=Tkinter.Button(self.qna,text="Reveal",command=self.showans,font=("Sans Serif",self.FontSize.get()))
+		self.qna.flip=Tkinter.Button(self.qna,text="Reveal",command=self.showans,font=("system",self.FontSize.get()))
 		self.qna.flip.grid(row=totrow-1,sticky="NSEW")
 		for i in range(0,totrow):
 			if i == totrow-1:
@@ -237,11 +237,11 @@ class simpleapp_tk(Tkinter.Tk):
 	def showans(self):
 		self.qna.grid_remove()
 		self.ans = Tkinter.Frame(self)
-		self.ans.pointlabel=Tkinter.Label(self.ans,text=self.PTS,font=("Sans Serif",self.FontSize.get()))
+		self.ans.pointlabel=Tkinter.Label(self.ans,text=self.PTS,font=("system",self.FontSize.get()))
 		self.ans.pointlabel.grid(row=0,sticky="NSEW")
-		self.ans.answer=Tkinter.Label(self.ans,text=str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[1]),wraplength=self.winfo_width()-int(self.FontSize.get()),font=("Sans Serif",self.FontSize.get()))
+		self.ans.answer=Tkinter.Label(self.ans,text=str(eval(str(eval(str(eval(str(eval(str(self.clusterfuck[0]))[self.CAT]))[1]))[self.QUES-1]))[1]),wraplength=self.winfo_width()-int(self.FontSize.get()),font=("system",self.FontSize.get()))
 		self.ans.answer.grid(row=1,sticky="NSEW")
-		self.ans.returnbtn=Tkinter.Button(self.ans,text="Return to Board",command=self.returntoboard,font=("Sans Serif",self.FontSize.get()))
+		self.ans.returnbtn=Tkinter.Button(self.ans,text="Return to Board",command=self.returntoboard,font=("system",self.FontSize.get()))
 		self.ans.returnbtn.grid(row=2,sticky="NSEW")
 		self.ans.columnconfigure(0,weight=1)
 		self.ans.rowconfigure(0,weight=0)
@@ -259,10 +259,11 @@ class simpleapp_tk(Tkinter.Tk):
 		self.FontSize.set(int(math.ceil(ws/68)))
 		for cat in range(0,5):
 			for ques in range(1,6):
-				exec('self.gb.catlab'+str(cat)+'.config(font=("Sans Serif",self.FontSize.get()),wraplength='+str(int(math.ceil(ws/5)))+')')
-				exec('self.gb.box'+str(cat)+'x'+str(ques)+'.config(font=("Sans Serif",self.FontSize.get()),wraplength='+str(int(math.ceil(ws/5)))+')')
+				exec('self.gb.catlab'+str(cat)+'.config(font=("system",self.FontSize.get()),wraplength='+str(int(math.ceil(ws/5)))+')')
+				exec('self.gb.box'+str(cat)+'x'+str(ques)+'.config(font=("system",self.FontSize.get()),wraplength='+str(int(math.ceil(ws/5)))+')')
 		
 if __name__ == "__main__":
 	app = simpleapp_tk(None)
 	app.title('Python Jeopardy')
 	app.mainloop()
+	

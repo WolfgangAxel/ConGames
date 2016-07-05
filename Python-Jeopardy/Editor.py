@@ -102,7 +102,7 @@ class simpleapp_tk(Tkinter.Tk):
 		f.close()
 	
 	def arraysave(self):
-		f=open(os.getcwd()+'%s.board' % self.savename.ent.get(),'w')
+		f=open(os.getcwd()+'/%s.board' % self.savename.ent.get(),'w')
 		P=[]
 		ABP=[]
 		for cat in range(0,5):

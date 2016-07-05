@@ -14,13 +14,14 @@ class simpleapp_tk(Tkinter.Tk):
 	def initialize(self):
 		self.grid()
 		
-		if not os.path.exists(os.getcwd()+'/.PythonJeopardy'):
-			os.mkdir(os.getcwd()+'/.PythonJeopardy')
+		self.HOME = os.getcwd()
+		if not os.path.exists(self.HOME+'/.PythonJeopardy'):
+			os.mkdir(self.HOME+'/.PythonJeopardy')
 		
 		self.menya = Tkinter.Menu(self)
 		self.menya.add_command(label="New", command=self.StartAnew)
 		self.OpenMenu = Tkinter.Menu(self.menya,tearoff=0)
-		for i,name in enumerate(glob.glob(os.getcwd()+'/.PythonJeopardy/*.board')):
+		for i,name in enumerate(glob.glob(self.HOME+'/.PythonJeopardy/*.board')):
 			if name:
 				exec('def Open'+str(i)+'():'+
 					'\n    app.OpenFile ="'+name+'"'+
@@ -102,7 +103,7 @@ class simpleapp_tk(Tkinter.Tk):
 		f.close()
 	
 	def arraysave(self):
-		f=open(os.getcwd()+'/%s.board' % self.savename.ent.get(),'w')
+		f=open(self.HOME+'/.PythonJeopardy/%s.board' % self.savename.ent.get(),'w')
 		P=[]
 		ABP=[]
 		for cat in range(0,5):
@@ -176,7 +177,7 @@ class simpleapp_tk(Tkinter.Tk):
 		self.savename.proceed.grid(column=1,row=0,sticky="NSEW")
 
 	def readablesave(self):
-		f=open(os.getcwd()+'/.PythonJeopardy/%s.txt' % self.savename.ent.get(),'w')
+		f=open(self.HOME+'/.PythonJeopardy/%s.txt' % self.savename.ent.get(),'w')
 		for cat in range(0,5):
 			exec('f.writelines("Category: "+self.CatName'+str(cat)+'.get()+"\\n")')
 			for ques in range(1,6):

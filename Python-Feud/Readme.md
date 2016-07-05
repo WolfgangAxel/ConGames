@@ -1,5 +1,5 @@
 # Family Feud!
-A simple Python program to manage playing a "Family Feud"-style game with two teams. Probably best used for larger groups of people, such as a party or convention.
+A simple Python program to manage playing a "Family Feud"-style game with two teams. Probably best used for larger groups of people, such as a party or convention. Should be 100% cross platform!
 
 ## Requirements
 The csv, math, and Tkinter Python libraries (built on Python 2.7.11).

@@ -3,6 +3,8 @@ A simple Python program to manage playing a "Name That Tune"-style game with up 
 
 This is version 2.0, and is a complete rewrite of what I had posted originally under my "Random Projects" repo. Assuming VLC still ships with cvlc under Windows/OSX, and assuming the syntax is the same, this should be 100% cross platform.
 
+[Here are some images of the game](http://imgur.com/a/8062S)
+
 ## Requirements
 vlc (cvlc), and Tkinter, built on Python 2.7.11
 

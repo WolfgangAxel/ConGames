@@ -377,7 +377,7 @@ class simpleapp_tk(Tkinter.Tk):
 				else:
 					exec('self.ScoreTime.'+team+'Frame.'+team+'lab.grid(row=2,column=0,columnspan=3,sticky="NSEW")')
 					exec('self.ScoreTime.'+team+'Frame.'+team+'Entry.grid(column=3,row=1,sticky="NSEW")')
-				self.worth = [str(int(math.ceil(self.P[0]/2))),str(self.P[0]),str(self.P[4]),"wager"]
+				self.worth = [str(int(math.ceil(min(P)/2))),str(min(P)),str(max(P)),"wager"]
 				#hehehe
 				for row,operation,operand in [(0,"add","+"),(1,"sub","-")]:
 					for col,worth in enumerate(self.worth):
@@ -445,7 +445,7 @@ class simpleapp_tk(Tkinter.Tk):
 		if self.Round <3:
 			if self.PC:
 				self.P=eval(str(self.clusterfuck[1]))
-				self.worth = [str(int(math.ceil(self.P[0]/2))),str(self.P[0]),str(self.P[4]),"wager"]
+				self.worth = [str(int(math.ceil(min(P)/2))),str(min(P)),str(max(P)),"wager"]
 				#hehehe
 				for team in self.ScoreTime.Teams:
 					for row,operation,operand in [(0,"add","+"),(1,"sub","-")]:

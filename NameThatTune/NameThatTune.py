@@ -36,22 +36,17 @@ class simpleapp_tk(Tkinter.Tk):
 		self.timeOut = Tkinter.StringVar()
 		self.timeOut.set("Time's up!")
 		
-		self.Font = tkFont.Font(family="system",size=12)
-		self.scoreFont = tkFont.Font(family="system",size=9)
-		self.gbFont = tkFont.Font(family="system",size=12)
+		self.defaultFontSize=12
+		
+		self.Font = tkFont.Font(family="system",size=self.defaultFontSize)
+		self.scoreFont = tkFont.Font(family="system",size=int(self.defaultFontSize*0.75))
+		self.gbFont = tkFont.Font(family="system",size=self.defaultFontSize)
 		
 		##Making the Menu
 		
 		self.menu = Tkinter.Menu()
-		self.menu.team = Tkinter.Menu(self,tearoff=0)
-		for i in range(1,11):
-			exec('def changeTo'+str(i)+'():'+
-				'\n    app.TeamNum.set('+str(i)+')'+
-				'\n    app.updateTeam()')
-			exec('self.menu.team.add_command(label="'+str(i)+'",command=changeTo'+str(i)+')')
-		self.menu.add_cascade(label="Number of Teams",menu=self.menu.team)
-		self.menu.add_command(label="Launch Board",command=self.launchBoard)
 		self.menu.add_command(label="Auto-adjust font size",command=self.autoSize)
+		self.menu.add_command(label="Launch Board",command=self.launchBoard)
 		self.menu.add_command(label="Launch editor",command=self.launchEditor)
 		self.config(menu=self.menu)
 		
@@ -128,13 +123,22 @@ class simpleapp_tk(Tkinter.Tk):
 		self.ed.confirm.destroy()
 		
 	def autoSize(self):
+		scale=35
 		self.ws = self.winfo_width()
-		self.Font.config(size=int(math.ceil(self.ws/54)))
-		self.scoreFont.config(size=int(math.ceil(self.ws/108)))
+		self.Font.config(size=int(math.ceil(self.ws/scale)))
+		self.scoreFont.config(size=int(math.ceil(self.ws/scale*0.75)))
 		self.gb.ws = self.gb.winfo_width()
-		self.gbFont.config(size=int(math.ceil(self.gb.ws/54)))
+		self.gbFont.config(size=int(math.ceil(self.gb.ws/scale)))
 	
 	def launchBoard(self):
+		self.menu.delete(2,3)
+		self.menu.team = Tkinter.Menu(self,tearoff=0)
+		for i in range(1,11):
+			exec('def changeTo'+str(i)+'():'+
+				'\n    app.TeamNum.set('+str(i)+')'+
+				'\n    app.updateTeam()')
+			exec('self.menu.team.add_command(label="'+str(i)+'",command=changeTo'+str(i)+')')
+		self.menu.add_cascade(label="Number of Teams",menu=self.menu.team)
 		self.changeControlBoard()
 		self.timer=Tkinter.IntVar()
 		self.timer.set(self.countdownLength)
@@ -202,7 +206,12 @@ class simpleapp_tk(Tkinter.Tk):
 			exec('self.info.'+thing+' = Tkinter.Label(self.info,textvariable=self.current'+thing+',font=self.Font,relief="sunken")')
 			exec('self.info.'+thing+'.grid(row='+str(i)+',column=0,sticky="NSEW")')
 			exec('def reveal'+thing+'():'+
-				'\n    app.gb.info.'+thing+'.config(bg="#dddddd")')
+				'\n    if  app.info.reveal'+thing+'Butt.config("relief")[-1] == "raised":'+
+				'\n        app.gb.info.'+thing+'.config(bg="#dddddd")'+
+				'\n        app.info.reveal'+thing+'Butt.config(relief="sunken",text="Hide")'
+				'\n    else:'
+				'\n        app.gb.info.'+thing+'.config(bg="#000000")'+
+				'\n        app.info.reveal'+thing+'Butt.config(relief="raised",text="Reveal")')
 			exec('self.info.reveal'+thing+'Butt = Tkinter.Button(self.info,state="disabled",text="Reveal",command=reveal'+thing+',font=self.Font)')
 			exec('self.info.reveal'+thing+'Butt.grid(row='+str(i)+',column=1,sticky="NSEW")')
 		for thing in ["row","column"]:
@@ -239,8 +248,8 @@ class simpleapp_tk(Tkinter.Tk):
 			self.currentSong.set(str(eval(self.newSongList[self.countUp])[1]))
 			self.timer.set(self.countdownLength)
 			self.gb.info.clock.config(textvariable=self.timer)
-			self.info.revealShowButt.config(state="disabled")
-			self.info.revealSongButt.config(state="disabled")
+			self.info.revealShowButt.config(relief="raised",text="Reveal",state="disabled")
+			self.info.revealSongButt.config(relief="raised",text="Reveal",state="disabled")
 		else:
 			self.PlayButt.config(relief="sunken",text="Reset")
 			self.playsnip()
@@ -260,11 +269,10 @@ class simpleapp_tk(Tkinter.Tk):
 			
 	def playsnip(self):
 		self.countUp=self.countUp+1
-		self.play = "cvlc --play-and-exit --no-repeat --no-loop %s/.NTT/%r.mp3" % (self.HOME, self.songRandom[self.countUp-1]+1)
-		os.system(self.play)
+		os.system("cvlc --play-and-exit --no-repeat --no-loop "+self.HOME+"/.NTT/"+str(self.songRandom[self.countUp-1]+1)+".mp3")
 		self.songNumber=self.songNumber-1
 		
 if __name__ == "__main__":
 	app = simpleapp_tk(None)
-	app.title('Name That Tune!')
+	app.title('Python ConGames --> Name That Tune!')
 	app.mainloop()

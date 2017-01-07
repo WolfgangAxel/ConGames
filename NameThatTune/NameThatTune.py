@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 import Tkinter,tkFont
 import time
@@ -140,7 +140,7 @@ class simpleapp_tk(Tkinter.Tk):
 			exec('self.menu.team.add_command(label="'+str(i)+'",command=changeTo'+str(i)+')')
 		self.menu.add_cascade(label="Number of Teams",menu=self.menu.team)
 		self.menu.navi = Tkinter.Menu(self,tearoff=0)
-		self.menu.navi.add_command(label="Replay last song",command=self.playsnip)
+		self.menu.navi.add_command(label="Play this song",command=self.playsnip)
 		self.menu.navi.add_command(label="Skip",command=self.skipIt)
 		self.menu.navi.add_command(label="Previous",command=self.goBack)
 		self.menu.add_cascade(label="Navigation",menu=self.menu.navi)
@@ -248,21 +248,19 @@ class simpleapp_tk(Tkinter.Tk):
 	
 	def beginCountdown(self):
 		if self.PlayButt.config("relief")[-1]=="sunken":
-			self.updateCells()
+			self.skipIt()
 		else:
 			self.PlayButt.config(relief="sunken",text="Reset")
-			self.skipIt(button=False)
 			self.playsnip()
 			self.ongoingTimer = True
 			self.countdown()
 			self.info.revealShowButt.config(state="normal")
 			self.info.revealSongButt.config(state="normal")
 	
-	def skipIt(self,button=True):
+	def skipIt(self):
 		self.countUp=self.countUp+1
 		self.songNumber=self.songNumber-1
-		if button:
-			self.updateCells()
+		self.updateCells()
 	
 	def goBack(self):
 		self.countUp=self.countUp-1
@@ -275,8 +273,8 @@ class simpleapp_tk(Tkinter.Tk):
 		self.songsRemaining.set("Songs left: %r" % self.songNumber)
 		self.gb.info.Show.config(bg="black")
 		self.gb.info.Song.config(bg="black")
-		self.currentShow.set(str(eval(self.newSongList[self.countUp])[0]))
-		self.currentSong.set(str(eval(self.newSongList[self.countUp])[1]))
+		self.currentShow.set(eval(self.newSongList[self.countUp])[0])
+		self.currentSong.set(eval(self.newSongList[self.countUp])[1])
 		self.timer.set(self.countdownLength)
 		self.gb.info.clock.config(textvariable=self.timer)
 		self.info.revealShowButt.config(relief="raised",text="Reveal",state="disabled")
@@ -292,7 +290,7 @@ class simpleapp_tk(Tkinter.Tk):
 				self.gb.info.clock.config(textvariable=self.timeOut)
 			
 	def playsnip(self):
-		os.system("cvlc --play-and-exit --no-repeat --no-loop "+self.HOME+"/.NTT/"+str(self.songRandom[self.countUp-1]+1)+".mp3")
+		os.system("cvlc --play-and-exit --no-repeat --no-loop "+self.HOME+"/.NTT/"+str(self.songRandom[self.countUp]+1)+".mp3")
 		
 if __name__ == "__main__":
 	app = simpleapp_tk(None)

@@ -31,7 +31,7 @@ class simpleapp_tk(Tkinter.Tk):
 		self.TeamNum = Tkinter.IntVar()
 		self.TeamNum.set(1)
 		
-		self.countdownLength = 20
+		self.countdownLength = 30
 		self.countUp = 0
 		self.timeOut = Tkinter.StringVar()
 		self.timeOut.set("Time's up!")
@@ -139,6 +139,11 @@ class simpleapp_tk(Tkinter.Tk):
 				'\n    app.updateTeam()')
 			exec('self.menu.team.add_command(label="'+str(i)+'",command=changeTo'+str(i)+')')
 		self.menu.add_cascade(label="Number of Teams",menu=self.menu.team)
+		self.menu.navi = Tkinter.Menu(self,tearoff=0)
+		self.menu.navi.add_command(label="Replay last song",command=self.playsnip)
+		self.menu.navi.add_command(label="Skip",command=self.skipIt)
+		self.menu.navi.add_command(label="Previous",command=self.goBack)
+		self.menu.add_cascade(label="Navigation",menu=self.menu.navi)
 		self.changeControlBoard()
 		self.timer=Tkinter.IntVar()
 		self.timer.set(self.countdownLength)
@@ -206,8 +211,12 @@ class simpleapp_tk(Tkinter.Tk):
 			exec('self.info.'+thing+' = Tkinter.Label(self.info,textvariable=self.current'+thing+',font=self.Font,relief="sunken")')
 			exec('self.info.'+thing+'.grid(row='+str(i)+',column=0,sticky="NSEW")')
 			exec('def reveal'+thing+'():'+
+				'\n    app.gb.palette = ["f","d","b"]'+
+				'\n    app.gb.bg = "#"'+
+				'\n    for i in range(6):'+
+				'\n        app.gb.bg = app.gb.bg + app.gb.palette[int(random.random()*3)-1]'+
 				'\n    if  app.info.reveal'+thing+'Butt.config("relief")[-1] == "raised":'+
-				'\n        app.gb.info.'+thing+'.config(bg="#dddddd")'+
+				'\n        app.gb.info.'+thing+'.config(bg=app.gb.bg)'+
 				'\n        app.info.reveal'+thing+'Butt.config(relief="sunken",text="Hide")'
 				'\n    else:'
 				'\n        app.gb.info.'+thing+'.config(bg="#000000")'+
@@ -239,24 +248,39 @@ class simpleapp_tk(Tkinter.Tk):
 	
 	def beginCountdown(self):
 		if self.PlayButt.config("relief")[-1]=="sunken":
-			self.ongoingTimer = False
-			self.PlayButt.config(relief="raised",text="Play song")
-			self.songsRemaining.set("Songs left: %r" % self.songNumber)
-			self.gb.info.Show.config(bg="black")
-			self.gb.info.Song.config(bg="black")
-			self.currentShow.set(str(eval(self.newSongList[self.countUp])[0]))
-			self.currentSong.set(str(eval(self.newSongList[self.countUp])[1]))
-			self.timer.set(self.countdownLength)
-			self.gb.info.clock.config(textvariable=self.timer)
-			self.info.revealShowButt.config(relief="raised",text="Reveal",state="disabled")
-			self.info.revealSongButt.config(relief="raised",text="Reveal",state="disabled")
+			self.updateCells()
 		else:
 			self.PlayButt.config(relief="sunken",text="Reset")
+			self.skipIt(button=False)
 			self.playsnip()
 			self.ongoingTimer = True
 			self.countdown()
 			self.info.revealShowButt.config(state="normal")
 			self.info.revealSongButt.config(state="normal")
+	
+	def skipIt(self,button=True):
+		self.countUp=self.countUp+1
+		self.songNumber=self.songNumber-1
+		if button:
+			self.updateCells()
+	
+	def goBack(self):
+		self.countUp=self.countUp-1
+		self.songNumber=self.songNumber+1
+		self.updateCells()
+	
+	def updateCells(self):
+		self.ongoingTimer = False
+		self.PlayButt.config(relief="raised",text="Play song")
+		self.songsRemaining.set("Songs left: %r" % self.songNumber)
+		self.gb.info.Show.config(bg="black")
+		self.gb.info.Song.config(bg="black")
+		self.currentShow.set(str(eval(self.newSongList[self.countUp])[0]))
+		self.currentSong.set(str(eval(self.newSongList[self.countUp])[1]))
+		self.timer.set(self.countdownLength)
+		self.gb.info.clock.config(textvariable=self.timer)
+		self.info.revealShowButt.config(relief="raised",text="Reveal",state="disabled")
+		self.info.revealSongButt.config(relief="raised",text="Reveal",state="disabled")
 	
 	def countdown(self):
 		if self.ongoingTimer:
@@ -268,9 +292,7 @@ class simpleapp_tk(Tkinter.Tk):
 				self.gb.info.clock.config(textvariable=self.timeOut)
 			
 	def playsnip(self):
-		self.countUp=self.countUp+1
 		os.system("cvlc --play-and-exit --no-repeat --no-loop "+self.HOME+"/.NTT/"+str(self.songRandom[self.countUp-1]+1)+".mp3")
-		self.songNumber=self.songNumber-1
 		
 if __name__ == "__main__":
 	app = simpleapp_tk(None)

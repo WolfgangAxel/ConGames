@@ -45,7 +45,6 @@ class simpleapp_tk(Tkinter.Tk):
 		##Making the Menu
 		
 		self.menu = Tkinter.Menu()
-		self.menu.add_command(label="Auto-adjust font size",command=self.autoSize)
 		self.menu.add_command(label="Launch Board",command=self.launchBoard)
 		self.menu.add_command(label="Launch editor",command=self.launchEditor)
 		self.config(menu=self.menu)
@@ -131,7 +130,8 @@ class simpleapp_tk(Tkinter.Tk):
 		self.gbFont.config(size=int(math.ceil(self.gb.ws/scale)))
 	
 	def launchBoard(self):
-		self.menu.delete(2,3)
+		self.menu.add_command(label="Auto-adjust font size",command=self.autoSize)
+		self.menu.delete(1,2)
 		self.menu.team = Tkinter.Menu(self,tearoff=0)
 		for i in range(1,11):
 			exec('def changeTo'+str(i)+'():'+
@@ -140,9 +140,9 @@ class simpleapp_tk(Tkinter.Tk):
 			exec('self.menu.team.add_command(label="'+str(i)+'",command=changeTo'+str(i)+')')
 		self.menu.add_cascade(label="Number of Teams",menu=self.menu.team)
 		self.menu.navi = Tkinter.Menu(self,tearoff=0)
-		self.menu.navi.add_command(label="Play this song",command=self.playsnip)
 		self.menu.navi.add_command(label="Skip",command=self.skipIt)
 		self.menu.navi.add_command(label="Previous",command=self.goBack)
+		self.menu.navi.add_command(label="Play this song",command=self.playsnip)
 		self.menu.add_cascade(label="Navigation",menu=self.menu.navi)
 		self.changeControlBoard()
 		self.timer=Tkinter.IntVar()
@@ -207,7 +207,7 @@ class simpleapp_tk(Tkinter.Tk):
 		self.redefineAndRandomize()
 		for i,thing in enumerate(["Show","Song"]):
 			exec('self.current'+thing+'=Tkinter.StringVar()')
-			exec('self.current'+thing+'.set(str(eval(self.newSongList[0])['+str(i)+']))')
+			exec('self.current'+thing+'.set(eval(self.newSongList[0])['+str(i)+'])')
 			exec('self.info.'+thing+' = Tkinter.Label(self.info,textvariable=self.current'+thing+',font=self.Font,relief="sunken")')
 			exec('self.info.'+thing+'.grid(row='+str(i)+',column=0,sticky="NSEW")')
 			exec('def reveal'+thing+'():'+
@@ -258,14 +258,17 @@ class simpleapp_tk(Tkinter.Tk):
 			self.info.revealSongButt.config(state="normal")
 	
 	def skipIt(self):
-		self.countUp=self.countUp+1
-		self.songNumber=self.songNumber-1
-		self.updateCells()
+		if self.songNumber > 0:
+			self.countUp=self.countUp+1
+			self.songNumber=self.songNumber-1
+			self.updateCells()
+			
 	
 	def goBack(self):
-		self.countUp=self.countUp-1
-		self.songNumber=self.songNumber+1
-		self.updateCells()
+		if self.songNumber < len(self.songArray):
+			self.countUp=self.countUp-1
+			self.songNumber=self.songNumber+1
+			self.updateCells()
 	
 	def updateCells(self):
 		self.ongoingTimer = False

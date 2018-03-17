@@ -32,7 +32,7 @@ class simpleapp_tk(tkinter.Tk):
         self.textColorArray = ["white","white","black","white","black","white","white","black","black","white"]
         
         self.TeamNum = tkinter.IntVar()
-        self.TeamNum.set(1)
+        self.TeamNum.set(2)
         
         self.countdownLength = 30
         self.countUp = 0
@@ -45,6 +45,9 @@ class simpleapp_tk(tkinter.Tk):
         self.Font = tkinter.font.Font(family="system",size=self.defaultFontSize)
         self.scoreFont = tkinter.font.Font(family="system",size=int(self.defaultFontSize*0.75))
         self.gbFont = tkinter.font.Font(family="system",size=self.defaultFontSize)
+        
+        self.timer=tkinter.IntVar()
+        self.timer.set(self.countdownLength)
         
         ##Making the Menu
         
@@ -93,7 +96,7 @@ class simpleapp_tk(tkinter.Tk):
         self.ed.songNameEntry=tkinter.Entry(self.ed,textvariable=self.ed.songName)
         self.ed.songNameEntry.grid(row=3,sticky="NSEW")
         self.ed.filepath.set("Enter file name here")
-        self.ed.showName.set("Enter show name here")
+        self.ed.showName.set("Enter show/artist name here")
         self.ed.songName.set("Enter song name here")
         self.ed.saveNew = tkinter.Button(self.ed,text="Save",command=self.saveSong)
         self.ed.saveNew.grid(row=4,sticky="NSEW")
@@ -154,8 +157,6 @@ class simpleapp_tk(tkinter.Tk):
         self.menu.navi.add_command(label="Play this song",command=self.playsnip)
         self.menu.add_cascade(label="Navigation",menu=self.menu.navi)
         self.changeControlBoard()
-        self.timer=tkinter.IntVar()
-        self.timer.set(self.countdownLength)
         
         self.gb = tkinter.Toplevel(self)
         self.gb.info = tkinter.Frame(self.gb)
@@ -205,11 +206,13 @@ class simpleapp_tk(tkinter.Tk):
     def changeControlBoard(self):
         self.introLabel.grid_remove()
         self.info = tkinter.Frame(self)
-        self.info.grid(row=0,column=0,columnspan=2,sticky="NSEW")
+        self.info.grid(row=0,column=0,columnspan=3,sticky="NSEW")
         self.team = tkinter.Frame(self)
         self.team.grid(row=1,sticky="NSEW")
         self.PlayButt = tkinter.Button(self,text="Play song",command=self.beginCountdown,font=self.Font)
         self.PlayButt.grid(row=1,column=1,sticky="NSEW")
+        self.clock = tkinter.Label(self,bg="#dddddd",textvariable=self.timer,relief="sunken",font=self.gbFont)
+        self.clock.grid(row=1,column=2,sticky="NSEW")
         for thing in ["row","column"]:
             for i in [0,1]:
                 exec('self.'+thing+'configure('+str(i)+',weight=1)')
@@ -262,10 +265,9 @@ class simpleapp_tk(tkinter.Tk):
             self.ongoingTimer = False
         else:
             self.PlayButt.config(relief="sunken",text="Reset")
-            self.nowPlaying = eval(self.newSongList[self.countUp])[2]
             self.playsnip()
             self.ongoingTimer = True
-            self.countdown(self.nowPlaying)
+            self.countdown(self.currentSong.get())
             self.info.revealShowButt.config(state="normal")
             self.info.revealSongButt.config(state="normal")
     
@@ -302,7 +304,7 @@ class simpleapp_tk(tkinter.Tk):
     def countdown(self,NP):
         if self.p.is_playing():
             self.after(100,self.countdown,NP)
-        elif self.ongoingTimer and NP == self.nowPlaying:
+        elif self.ongoingTimer and NP == self.currentSong.get():
             if self.timer.get() > 0:
                 self.timer.set(self.timer.get()-1)
                 self.after(1000,self.countdown,NP)
@@ -311,7 +313,7 @@ class simpleapp_tk(tkinter.Tk):
                 self.gb.info.clock.config(textvariable=self.timeOut)
             
     def playsnip(self):
-        self.p = sa.WaveObject.from_wave_file(os.path.join(self.songDir,self.nowPlaying))
+        self.p = sa.WaveObject.from_wave_file(os.path.join(self.songDir,eval(self.newSongList[self.countUp])[2]))
         self.p = self.p.play()
         
 if __name__ == "__main__":

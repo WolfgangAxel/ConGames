@@ -6,9 +6,9 @@ This is version 3.0, and is a complete rewrite of what I had posted originally u
 [Here are some (old) images of the game](http://imgur.com/a/8062S)
 
 ## Requirements
-Python3 (built using 3.6)
-simpleaudio
-tkinter
+* Python3 (built using 3.6)
+* simpleaudio
+* tkinter
 
 ## How To
 
